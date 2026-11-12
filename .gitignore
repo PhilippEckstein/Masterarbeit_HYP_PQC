@@ -1,4 +1,5 @@
 main-english.pdf
+/build/
 main-english-*.pdf
 figures/*.pdf_tex
 

@@ -1,0 +1,104 @@
+{
+    "latex-workshop.latex.recipe.default": "first",
+    "latex-workshop.latex.build.enableMagicComments": true,
+    "latex-workshop.latex.rootFile.indicator": "\\begin{document}",
+    "latex-workshop.latex.search.rootFiles.include": ["main-german.tex"],
+    "latex-workshop.latex.autoBuild.run": "onSave",
+    "latex-workshop.latex.outDir": "%DIR%",
+    "latex-workshop.latex.auxDir": "%DIR%/build",
+    "latex-workshop.latex.autoClean.run": "never",
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "Latexmk (automatisch)",
+            "tools": ["latexmk"]
+        },
+        {
+            "name": "LuaLaTeX + Biber + LuaLaTeX (2x)",
+            "tools": ["lualatex", "biber", "makeglossaries", "lualatex", "lualatex"]
+        }
+    ],
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmk",
+            "command": "latexmk",
+            "cwd": "%DIR%",
+            "args": [
+                "-lualatex",
+                "-norc",
+                "-r", "%DIR%/_latexmkrc",
+                "-interaction=nonstopmode",
+                "-halt-on-error",
+                "%DOC%"
+            ]
+        },
+        {
+            "name": "lualatex",
+            "command": "lualatex",
+            "env": {"TEXINPUTS": "%DIR%/tex//;"},
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-halt-on-error",
+                "-file-line-error",
+                "-aux-directory=%DIR%/build",
+                "-output-directory=%OUTDIR%",
+                "%DOC%"
+            ]
+        },
+        {
+            "name": "biber",
+            "command": "biber",
+            "args": ["--input-directory=%DIR%/build", "--output-directory=%DIR%/build", "%DOCFILE%"]
+        },
+        {
+            "name": "makeglossaries",
+            "command": "makeglossaries-lite",
+            "cwd": "%DIR%/build",
+            "args": ["%DOCFILE%"]
+        }
+    ],
+    "files.exclude": {
+        "**/.github": true,
+        "**/.vscode": true,
+        "**/.aspell*": true,
+        "**/.dockerignore": true,
+        "**/.editorconfig": true,
+        "**/.gitignore": true,
+        "**/.gitmodules": true,
+        "**/.textlintrc.json": true,
+        "generator-latex-template": true,
+        "build": true,
+        "CHANGELOG.md": true,
+        "CONTRIBUTING.md": true,
+        "Dockerfile": true,
+        "heylogs.properties": true,
+        "LICENSE": true,
+        "localSettings.yaml": true,
+        "Makefile": true,
+        "Texlivefile": true,
+        "_latexmkrc": true,
+        "**/*.log": true,
+        "**/*.aux": true,
+        "**/*.bcf": true,
+        "**/*.blg": true,
+        "**/*.bbl": true,
+        "**/*.run.xml": true,
+        "**/*.toc": true,
+        "**/*.lof": true,
+        "**/*.lot": true,
+        "**/*.lol": true,
+        "**/*.out": true,
+        "**/*.fls": true,
+        "**/*.fdb_latexmk": true,
+        "**/*.synctex*": true,
+        "**/*.glo*": true,
+        "**/*.gls*": true,
+        "**/*.glg*": true,
+        "**/*.acn": true,
+        "**/*.acr": true,
+        "**/*.alg": true,
+        "**/*.ist": true,
+        "**/*.upa": true,
+        "**/*.upb": true
+    }
+}

@@ -1,0 +1,27 @@
+% !TeX root = ../main-german.tex
+\chapter{Elliptische Kurven}
+
+Twisted Edward (Diese eventuell zusammen mit Mestres Algorithmus einführen?) und Montgomery Kurven als Erweiterung
+\section{Elliptische Kurven Grundlage}
+\textbf{Erklären warum man nicht Punkte über $\mathbb{R}$ nimmt?}
+
+Über $R$ bräuchte man Gleitpunktarithmetik was problematisch ist? Also Lösung Punkte über $\mathbb{Q}$?
+Nein, da über $Q$ hier auch große Brüche entstehen können was auch sehr rechenaufwändig ist. Daher werden Punkte über dem endlichen Körper $\mathbb{F}_q$ genommen.
+
+Satz von Mordell-Weill nutzen? Die Gruppe $(E(\mathbb{Q}),+)$ ist endlich erzeugt. Manche Punkte erzeugen endliche viele weitere Punkte und manche erzeugen unendlich viele weitere Punkte. Punkte die endliche viele Punkte erzeugen, nennt man Torsionspunkte. Kleinstmöglichste Anzahl die ich hinzufügen muss, um unendlich viele Punkte zu erhalten ist der Rang. (Aus Dorfuchs Video).
+Satz von Nagell-Lutz um alle Punkte endlicher Ordnung zu bestimmen.
+Punkt unendliche Ordnung kann man beliebig oft mit sich selbst addieren und kommt zu beliebig vielen anderen Punkten wie ganze Zahlen. Ist deshalb isomorph zu den ganzen Zahlen. $E(\mathbb{Q})\simeq E(\mathbb{Q})_{\operatorname{tors}}\oplus\mathbb{Z}^r$
+
+Vermutung von Goldfeld und Katz-Sarnak: 50 Prozent aller elliptischen Kurven haben Rang 0 und 50 Prozent haben Rang 1. (wahrscheinlichkeitsmäígbetrachtet nicht Nummerisch)
+
+
+\begin{definition}[Glatter/regulärer Punkt]
+    Ein Punkt $P$ heißt glatt oder regulärer Punkt von $V$ wenn es ein $i$ gibt mit $\frac{df}{dx_i}(P)\neq 0$. Ansonsten heißt $P$ ein singulärere Punkte der Varietät $V$
+\end{definition}
+\cite[S.82]{Hulek12}
+\section{Elliptische Kurven über endlichen Körper}
+\section{Elliptische Kurven Kryptographie}
+\section{Projektiver Raum}
+
+
+Beispiele ergänzen?

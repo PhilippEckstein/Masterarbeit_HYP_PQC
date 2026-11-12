@@ -1,0 +1,300 @@
+% !TeX root = ../main-german.tex
+% Eigene Befehle, Anpassungen und Umgebungen; nach packages.tex laden.
+
+% 🇩🇪 wird fuer Tabellen benötigt (z.B. >{centering\RBS}p{2.5cm} erzeugt einen zentrierten 2,5cm breiten Absatz in einer Tabelle
+\newcommand{\RBS}{\let\\=\tabularnewline}
+
+% 🇺🇸 To avoid issues with Springer's \mathplus. See also http://tex.stackexchange.com/q/212644/9075
+\providecommand\mathplus{+}
+
+% 🇺🇸 from hmks makros.tex - \indexify
+\newcommand{\toindex}[1]{\index{#1}#1}
+
+% 🇩🇪 Tipp aus "The Comprehensive LaTeX Symbol List"
+\newcommand{\dotcup}{\ensuremath{\,\mathaccent\cdot\cup\,}}
+
+% 🇩🇪 Anstatt $|x|$ $\abs{x}$ verwenden. Die Betragsstriche skalieren automatisch, falls "x" etwas größer sein sollte...
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+
+% 🇩🇪 Seitengrößen - Gegen Schusterjungen und Hurenkinder...
+\newcommand{\largepage}{\enlargethispage{\baselineskip}}
+\newcommand{\shortpage}{\enlargethispage{-\baselineskip}}
+
+\newcommand{\initialism}[1]{%
+  \textlcc{#1}\xspace%
+}
+\newcommand{\OMG}{\initialism{OMG}}
+\newcommand{\BPEL}{\initialism{BPEL}}
+\newcommand{\BPMN}{\initialism{BPMN}}
+\newcommand{\UML}{\initialism{UML}}
+
+% Ein "abstract" ist eine "Kurzfassung", keine "Zusammenfassung"
+\addto\captionsngerman{%
+  \renewcommand\abstractname{Kurzfassung}%
+}
+
+\theorempreskipamount 2ex plus1ex minus0.5ex
+\theorempostskipamount 2ex plus1ex minus0.5ex
+\theoremstyle{break}
+\newtheorem{definition}{Definition}[chapter]
+
+\theorembodyfont{\normalfont}
+\newtheorem{example}{Beispiel}[chapter]
+\newtheorem{remark}{Bemerkung}[chapter]
+\newtheorem{lemma}{Lemma}[chapter]
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{proposition}{Proposition}[chapter]
+\newtheorem{hilfssatz}{Hilfssatz}[chapter]
+
+
+\theoremstyle{nonumberplain}
+\theoremheaderfont{\normalfont\itshape}
+\theorembodyfont{\normalfont}
+\newtheorem{proof}{Beweis}
+
+\newcommand{\dingcheck}{\ding{51}}
+\newcommand{\dingcross}{\ding{55}}
+
+
+\makeatletter
+\AtBeginDocument{\toggletrue{blx@useprefix}}
+\AtBeginBibliography{\togglefalse{blx@useprefix}}
+\makeatother
+
+% Thin spaces between initials
+% http://tex.stackexchange.com/a/11083/9075
+\renewrobustcmd*{\bibinitdelim}{\,}
+
+% Keep first and last name together in the bibliography
+% http://tex.stackexchange.com/a/196192/9075
+\renewcommand*\bibnamedelimc{\addnbspace}
+\renewcommand*\bibnamedelimd{\addnbspace}
+
+% Replace last "and" by comma in bibliography
+% See http://tex.stackexchange.com/a/41532/9075
+\AtBeginBibliography{%
+  \renewcommand*{\finalnamedelim}{\addcomma\space}%
+}
+
+% enable hyperlinked author names when using \citeauthor
+% source: http://tex.stackexchange.com/a/75916/9075
+\DeclareCiteCommand{\citeauthor}
+{
+  \boolfalse{citetracker}%
+  \boolfalse{pagetracker}%
+  \usebibmacro{prenote}
+}
+{
+  \ifciteindex
+  {\indexnames{labelname}}
+  {}%
+  \printtext[bibhyperref]{\printnames{labelname}}
+}
+{\multicitedelim}
+{\usebibmacro{postnote}}
+
+\newcommand{\textcomment}[2]{\colorbox{yellow!60}{#1}\pdfcomment[color={0.234 0.867 0.211},hoffset=-6pt,voffset=10pt,opacity=0.5]{#2}}
+
+% Small PDF comment
+% 1st parameter: comment
+\newcommand{\sidecomment}[1]{\pdfcomment[color={0.045 0.278 0.643},voffset=4pt,icon=Note]{#1}}
+% Disabled variant - for the final PDF
+%\newcommand{\sidecomment}[1]{}
+
+\newcommand{\todo}[1]{TODO!\sidecomment{#1}}
+
+% Changes
+%
+% 1st parameter: review comment
+% 2nd parameter: new text
+\newcommand{\change}[2]{{\color{red}#2}\pdfcomment[color={0.234 0.867 0.211},voffset=8pt,opacity=0.5]{#1}}
+% Disabled variant - for the final PDF
+%\newcommand{\change}[2]{#2}
+
+% Define default commands
+\makeatletter
+\@ifundefined{missingfigure}{\newcommand{\missingfigure}{... missing figure ...}}{}
+\@ifundefined{textcomment}{\newcommand{\textcomment}[2]{#1 \todo{#2}}}{}
+\@ifundefined{sidecomment}{\newcommand{\sidecomment}[1]{\marginpar{#1}}}{}
+\@ifundefined{todo}{\newcommand{\todo}[1]{\sidecomment{#1}}}{}
+\@ifundefined{TODO}{\newcommand{\TODO}[1]{\todo{#1}}}{}
+\@ifundefined{todofix}{\newcommand{\todofix}[1]{\todo{#1}}}{}
+\@ifundefined{change}{\newcommand{\change}[2]{#1 $\rightarrow$ #2}}{}
+\makeatother
+
+% Textmarker (Textfarbe rot)
+\newcommand{\textmarker}[1]{{\color{red} #1}\xspace}
+
+% Modified (Text blau)
+\newcommand{\modified}[1]{{\color{blue!60!black} #1}\xspace}
+
+\floatname{algorithm}{Algorithmus}
+\renewcommand{\listalgorithmname}{Algorithmenverzeichnis}
+
+\newcommand{\commentchar}{\ensuremath{/\mkern-4mu/}}
+\algrenewcommand{\algorithmiccomment}[1]{\hfill $\commentchar$ #1}
+
+% \Zcref{...} is short for \zcref[S]{...}: capitalized, unabbreviated name at the beginning of a sentence
+\NewDocumentCommand{\Zcref}{s O{} m}{\IfBooleanTF{#1}{\zcref*[S,#2]{#3}}{\zcref[S,#2]{#3}}}
+
+%introduce \powerset - hint by http://matheplanet.com/matheplanet/nuke/html/viewtopic.php?topic=136492&post_id=997377
+\DeclareFontFamily{U}{MnSymbolC}{}
+\DeclareSymbolFont{MnSyC}{U}{MnSymbolC}{m}{n}
+\DeclareFontShape{U}{MnSymbolC}{m}{n}{
+  <-6>    MnSymbolC5
+  <6-7>   MnSymbolC6
+  <7-8>   MnSymbolC7
+  <8-9>   MnSymbolC8
+  <9-10>  MnSymbolC9
+  <10-12> MnSymbolC10
+  <12->   MnSymbolC12%
+}{}
+\DeclareMathSymbol{\powerset}{\mathord}{MnSyC}{180}
+
+\addto\captionsngerman{%
+  \renewcommand*{\glossaryname}{Bedeutung}%
+}
+
+% Enable hyphenation at other places as the dash.
+% Example: applicaiton\hydash specific
+\makeatletter
+\newcommand{\hydash}{\penalty\@M-\hskip\z@skip}
+% Definition of "= taken from http://mirror.ctan.org/macros/latex/contrib/babel-contrib/german/ngermanb.dtx
+\makeatother
+
+\newcommand*\Descriptionlabel[1]{%
+  \raisebox{0pt}[1ex][0pt]{
+    \makebox[\labelwidth][1]{
+      \parbox[t]{\labelwidth}{
+        \hspace{0pt}\textbf{#1:}}}}
+}
+
+\newcommand*\Descriptionlabelx[1]{%
+  \parbox[t]{\textwidth}{
+    \textbf{#1}\\\mbox{}}
+}
+
+\newenvironment{Description}{
+  \begin{list}{}{
+    \let\makelabel\Descriptionlabelx
+    \setlength\labelwidth{1em}
+    \setlength\leftmargin{\labelwidth+\labelsep}
+  }
+}
+{
+  \end{list}
+}
+
+% globally change line spacing of lists
+% paralist has suspended development since 10 years.
+% enumitem has been updated 2011-09-28
+
+\setlist{partopsep=0pt,itemsep=1pt}
+
+%------------------------------------------------------------------------
+% fquote Fancy Quotation environment
+% supports empty/optional author
+
+% Use \sloppy to make right-margin easier?
+% Set picture units to be relative to font size (em)?
+% Use begingroup to rest units afterwards?
+
+% provides \isempty test
+\definecolor{quotemark}{gray}{0.7}
+
+%fquote environment with author as optional parameter
+%usage: \begin{fquote}quote\end{fquote} or \begin{fquote}[Author]quote\end{fquote}
+\newenvironment{fquote}[1][]{%
+  \newcommand{\fqauthor}{\relax}
+  \ifthenelse{\isempty{#1}}
+  {}% do nothing
+  {\renewcommand{\fqauthor}{\hfill\textsc{--- #1}}}
+  \vspace{1em}
+  \begin{list}{}{%
+    \setlength{\leftmargin}{0.2\textwidth}
+    \setlength{\rightmargin}{0.2\textwidth}
+  }
+  \item[]%
+  \begin{picture}(0,0)(0,0)
+    \put(-15,-5){\makebox(0,0){%
+        \scalebox{4.5}{\textcolor{quotemark}{\bfseries``}}}%
+    }
+  \end{picture}\em\ignorespaces%
+}{%
+  \newline%
+  \makebox[0pt][l]{\hspace{0.6\textwidth}%
+    \begin{picture}(0,0)(0,0)
+      \put(15,10){\makebox(0,0){%
+          \scalebox{4.5}{\textcolor{quotemark}{\rmfamily\bfseries''}}}%
+      }
+    \end{picture}}%
+  \fqauthor
+  \end{list}
+}
+
+%German fquote
+%  1 parameter for the author's name, may be empty ("{}")
+%  guaranteed German quotes (works with lualatex and babel package)
+%  usage: \begin{gfquote}{Author}quote\end{gfquote}
+\newenvironment{gfquote}[1]{%
+  \newcommand{\fqauthor}{\relax}
+  \ifthenelse{\isempty{#1}}
+  {}% do nothing
+  {\renewcommand{\fqauthor}{\hfill\textsc{\textemdash #1}}}
+  \vspace{1em}
+  \begin{list}{}{%
+    \setlength{\leftmargin}{0.2\textwidth}
+    \setlength{\rightmargin}{0.2\textwidth}
+  }
+  \item[]%
+  \begin{picture}(0,0)(0,0)
+    \put(-15,-5){\makebox(0,0){%
+        \scalebox{4.5}{\textcolor{quotemark}{\bfseries \glqq}}}%
+    }
+  \end{picture}\em\ignorespaces%
+}{%
+  \newline%
+  \makebox[0pt][l]{\hspace{0.6\textwidth}%
+    \begin{picture}(0,0)(0,0)
+      \put(15,10){\makebox(0,0){%
+          \scalebox{4.5}{\textcolor{quotemark}{\rmfamily\bfseries \grqq}}}%
+      }
+    \end{picture}}%
+  \fqauthor
+  \end{list}
+}
+
+% Benötigt für eine korrekte Darstellung der Hinweise im erzeugten PDF
+\newcount\LTGbeginlineexample
+\newcount\LTGendlineexample
+\newenvironment{ltgexample}%
+{\LTGbeginlineexample=\numexpr\inputlineno+1\relax}%
+{\LTGendlineexample=\numexpr\inputlineno-1\relax%
+  \tcbinputlisting{%
+    listing only,
+    listing file=\currfilepath,
+    colback=green!5!white,
+    colframe=green!25,
+    coltitle=black!90,
+    coltext=black!90,
+    left=8mm,
+    title=Zugehöriger \LaTeX{}-Quelltext aus \texttt{\currfilepath},
+    listing options={
+        frame=none,
+        language={[LaTeX]TeX},
+        escapeinside={},
+        firstline=\the\LTGbeginlineexample,
+        lastline=\the\LTGendlineexample,
+        firstnumber=\the\LTGbeginlineexample,
+        basewidth=.5em,
+        % lange Zeilen auch ohne Leerzeichen umbrechen (z.B. \includegraphics[...]{...}); sonst ragen sie aus der Box
+        breakatwhitespace=false,
+        aboveskip=0mm,
+        belowskip=0mm,
+        numbers=left,
+        xleftmargin=0mm,
+        numberstyle=\tiny,
+        numbersep=8pt%
+      }
+  }
+}%

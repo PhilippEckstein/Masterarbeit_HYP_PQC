@@ -1,10 +1,27 @@
-$pdflatex = 'lualatex --shell-escape --file-line-error --synctex=-1 %O %S';
+$lualatex = 'lualatex --file-line-error --halt-on-error --synctex=1 %O %S';
 
 #------------------------------------------------------------------------------#
 # compilation
 
-# automatically call lualatex/pdflatex (instead of latex)
-$pdf_mode = 1;
+# Build with LuaLaTeX; latexmk schedules only the required follow-up runs.
+$pdf_mode = 4;
+$aux_dir = 'build';
+$out_dir = '.';
+@default_files = ('main-german.tex');
+$ENV{'TEXINPUTS'} = './tex//' . ($^O eq 'MSWin32' ? ';' : ':') . ($ENV{'TEXINPUTS'} // '');
+
+# MiKTeX can wrap the fatal-error marker that LaTeX Workshop needs before
+# parsing diagnostics. Repeat the existing marker on one complete line.
+add_hook('after_xlatex', sub {
+  open my $diagnostic_log, '<', $log_name or return;
+  local $/;
+  my $diagnostic_text = <$diagnostic_log>;
+  close $diagnostic_log;
+  my $fatal_marker = 'Fatal error occurred, no output PDF file produced!';
+  return if index($diagnostic_text, $fatal_marker) >= 0;
+  $diagnostic_text =~ s/\r?\n//g;
+  print "\n$fatal_marker\n" if index($diagnostic_text, $fatal_marker) >= 0;
+});
 
 # replaces main.pdf by jobname.pdf
 # Note: -pvc may then not find the PDF.
@@ -35,15 +52,25 @@ $bibtex_use = 2;
 # Glossaries inclusion inspired by https://tex.stackexchange.com/a/44316/9075
 add_cus_dep('glo', 'gls', 0, 'run_makeglossaries');
 add_cus_dep('acn', 'acr', 0, 'run_makeglossaries');
+add_cus_dep('glo-abr', 'gls-abr', 0, 'run_makeglossaries');
 
 sub run_makeglossaries {
+  require Cwd;
+  require File::Basename;
+  my $previous_dir = Cwd::getcwd();
+  my $directory = File::Basename::dirname($_[0]);
+  my $basename = File::Basename::basename($_[0]);
+  chdir $directory or die "Cannot enter glossary directory $directory: $!";
+  my $result;
   if ( $silent ) {
     # we use -lite to avoid an installation of perl
-    system "makeglossaries-lite", "-q", $_[0];
+    $result = system "makeglossaries-lite", "-q", $basename;
   }
   else {
-    system "makeglossaries-lite", $_[0];
+    $result = system "makeglossaries-lite", $basename;
   };
+  chdir $previous_dir or die "Cannot return to $previous_dir: $!";
+  return $result;
 }
 
 #------------------------------------------------------------------------------#

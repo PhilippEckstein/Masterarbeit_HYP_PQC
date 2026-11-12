@@ -12,16 +12,16 @@ editor = gedit
 # Files
 
 ## Main file name and literature list
-MASTER_TEX = main-english.tex
-LITERATURE = bibliography.bib
+MASTER_TEX = main-german.tex
+LITERATURE = bibliography/bibliography.bib
 
 ## Derived file names
 SRC = $(shell basename $(MASTER_TEX) .tex)
-TEX_FILES = $(wildcard *.tex content/*.tex)
+TEX_FILES = $(wildcard *.tex settings/*.tex chapters/*.tex chapters/appendices/*.tex tex/*.sty)
 GFX_FILES = $(wildcard figures/*)
 
 PDF = $(SRC).pdf
-AUX = $(SRC).aux
+AUX = build/$(SRC).aux
 
 # Other
 
@@ -38,10 +38,10 @@ all: $(PDF)
 compile: $(PDF)
 
 $(PDF): $(MASTER_TEX) $(LITERATURE) $(TEX_FILES) $(GFX_FILES)
-	latexmk $(MASTER_TEX)
+	latexmk -r _latexmkrc $(MASTER_TEX)
 
 clean:
-	latexmk -C
+	latexmk -r _latexmkrc -C $(MASTER_TEX)
 
 ## Endversion - mit eingebauter Seitenvorschau
 ## Mehrere Durchlaeufe, da bei longtable einige runs mehr vonnoeten sind...
